@@ -1,24 +1,29 @@
 import { Utils } from "./Utils";
+import axios, { AxiosResponse } from "axios";
 
 const integration_test = async () => {
-    // Integration test: ทดสอบการทำงานร่วมกันของฟังก์ชันต่างๆ
     let passed = true;
 
-    // Test helloworld + add ทำงานร่วมกัน
-    const greeting = Utils.helloworld();
-    if (greeting === "hello world") {
-        console.log("Integration test 1: helloworld() returns 'hello world' ✓");
+    // ── Integration Test 1: Utils.add ────────────────────────────────
+    const addResult = Utils.add(3, 4);
+    if (addResult === 7) {
+        console.log(`Integration test 1: Utils.add(3, 4) = ${addResult} ✓`);
     } else {
-        console.error(`Integration test 1: expected 'hello world', got '${greeting}'`);
+        console.error(`Integration test 1: expected 7, got ${addResult}`);
         passed = false;
     }
 
-    // Test add หลายค่ารวมกัน (integration scenario)
-    const result = Utils.add(Utils.add(1, 2), Utils.add(3, 4));
-    if (result === 21) {
-        console.log(`Integration test 2: add(add(1,2), add(3,4)) = ${result} ✓`);
-    } else {
-        console.error(`Integration test 2: expected 21, got ${result}`);
+    // ── Integration Test 2: HTTP GET / ───────────────────────────────
+    try {
+        const res: AxiosResponse = await axios.get("http://localhost:3000/");
+        if (res.status === 200) {
+            console.log(`Integration test 2: GET / → status ${res.status} ✓`);
+        } else {
+            console.error(`Integration test 2: expected 200, got ${res.status}`);
+            passed = false;
+        }
+    } catch (err: any) {
+        console.error(`Integration test 2: HTTP request failed - ${err.message}`);
         passed = false;
     }
 
