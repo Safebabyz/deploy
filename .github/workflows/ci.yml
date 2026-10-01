@@ -62,22 +62,27 @@ jobs:
       - name: Build project
         run: npm run build --silent
 
-      - name: Start server in background
-        run: node dist/index.js &
+      # ── ① Fail scenario ───────────────────────────────────────────
+      - name: Run Integration Test - Fail scenario
+        id: test-fail
+        run: node dist/IntegrationTestFail.js
+        continue-on-error: true
 
-      - name: Wait for server to be ready
-        run: sleep 3
+      - name: "❌ Integration Test Failed (expected)"
+        if: steps.test-fail.outcome == 'failure'
+        run: echo "❌ Fail scenario detected as expected"
 
-      - name: Run Integration Test
-        id: integration-test
+      # ── ② Success scenario ────────────────────────────────────────
+      - name: Run Integration Test - Success scenario
+        id: test-success
         run: node dist/IntegrationTest.js
 
       - name: "✅ Integration Test Passed"
-        if: steps.integration-test.outcome == 'success'
-        run: echo "✅ Integration test passed successfully!"
+        if: steps.test-success.outcome == 'success'
+        run: echo "✅ Success scenario passed!"
 
-      - name: "❌ Integration Test Failed"
-        if: steps.integration-test.outcome == 'failure'
+      - name: "❌ Integration Test Unexpected Failure"
+        if: steps.test-success.outcome == 'failure'
         run: |
-          echo "❌ Integration test failed!"
+          echo "❌ Integration test failed unexpectedly!"
           exit 1
