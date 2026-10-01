@@ -8,12 +8,47 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
-      - run: npm ci
-      - run: npm test
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Test
+        run: |
+          npm run build --silent
+          output=$(node dist/Test1.js)
+          # Capture the exit code of the previous command
+          exit_code=$?
+
+          # Check the exit code to determine if there was an error
+          if [ $exit_code -ne 0 ]; then
+            echo "Error: The Node.js script failed with exit code $exit_code"
+            exit 1  # Exit the workflow with an error code
+          fi
+
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Integration Test
+        run: npm test
