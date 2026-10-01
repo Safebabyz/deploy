@@ -63,9 +63,9 @@ jobs:
         run: npm run build --silent
 
       # ── ① Fail scenario ───────────────────────────────────────────
-      - name: Run Integration Test - Fail scenario
+      - name: Run Integration Test (Fail scenario)
         id: test-fail
-        run: node dist/IntegrationTestFail.js
+        run: node dist/IntegrationTest.js fail
         continue-on-error: true
 
       - name: "❌ Integration Test Failed (expected)"
@@ -73,7 +73,7 @@ jobs:
         run: echo "❌ Fail scenario detected as expected"
 
       # ── ② Success scenario ────────────────────────────────────────
-      - name: Run Integration Test - Success scenario
+      - name: Run Integration Test (Success scenario)
         id: test-success
         run: node dist/IntegrationTest.js
 
