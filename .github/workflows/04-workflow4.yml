@@ -1,0 +1,13 @@
+# รันต่อเมื่อ "Workflow 2" ทำงานเสร็จ (completed) → ลำดับ Workflow 1 → Workflow 2 → Workflow 4
+name: Workflow 4
+on:
+  workflow_run:
+    workflows: ["Workflow 2"]
+    types:
+      - completed
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: job1 step
+        run: echo "Workflow 4 - triggered after Workflow 2"
