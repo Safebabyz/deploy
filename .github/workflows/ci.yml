@@ -68,28 +68,16 @@ jobs:
       - name: Wait for server to be ready
         run: sleep 3
 
-      # ── ① Failed scenario ──────────────────────────────────────────
-      - name: Run Integration Test (Fail scenario)
-        id: integration-fail
-        run: node dist/IntegrationTestFail.js
-        continue-on-error: true
-
-      - name: "❌ Integration Test Failed"
-        if: steps.integration-fail.outcome == 'failure'
-        run: echo "❌ Integration test failed (as expected in fail scenario)"
-
-      # ── ② Success scenario ─────────────────────────────────────────
-      - name: Run Integration Test (Success scenario)
-        id: integration-success
+      - name: Run Integration Test
+        id: integration-test
         run: node dist/IntegrationTest.js
-        continue-on-error: true
 
       - name: "✅ Integration Test Passed"
-        if: steps.integration-success.outcome == 'success'
+        if: steps.integration-test.outcome == 'success'
         run: echo "✅ Integration test passed successfully!"
 
-      - name: "❌ Integration Test Unexpected Failure"
-        if: steps.integration-success.outcome == 'failure'
+      - name: "❌ Integration Test Failed"
+        if: steps.integration-test.outcome == 'failure'
         run: |
-          echo "❌ Integration test failed unexpectedly!"
+          echo "❌ Integration test failed!"
           exit 1
