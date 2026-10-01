@@ -1,0 +1,17 @@
+# สไลด์หน้า 45-47: Workflow 1 ทำงานเมื่อ push เสร็จแล้วจะไปเรียก Workflow 2 และ 3 ให้รันพร้อมกัน
+name: Workflow 1
+on:
+  push:
+    branches:
+      - main
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: job1 step
+        run: echo "Workflow 1 - job1"
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: job2 step
+        run: echo "Workflow 1 - job2"

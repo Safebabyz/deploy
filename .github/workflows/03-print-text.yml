@@ -1,0 +1,15 @@
+# สไลด์หน้า 44: checkout code มาที่ ubuntu แล้วพิมพ์เนื้อหาไฟล์
+name: Print Text from file
+on:
+  push:
+    branches:
+      - main
+jobs:
+  print-text:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Print text from dist/index.js
+        run: cat dist/index.js

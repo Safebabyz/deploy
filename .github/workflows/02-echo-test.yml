@@ -1,0 +1,12 @@
+# สไลด์หน้า 38-43: name / on / jobs / runs-on / steps
+name: echo-test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo "test"

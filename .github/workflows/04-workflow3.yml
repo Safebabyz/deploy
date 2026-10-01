@@ -1,0 +1,13 @@
+# สไลด์หน้า 47: รันต่อเมื่อ "Workflow 1" ทำงานเสร็จ (completed)
+name: Workflow 3
+on:
+  workflow_run:
+    workflows: ["Workflow 1"]
+    types:
+      - completed
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: job1 step
+        run: echo "Workflow 3 - triggered after Workflow 1"
