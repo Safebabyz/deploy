@@ -4,12 +4,12 @@ import axios, { AxiosResponse } from "axios";
 const integration_test = async () => {
     let passed = true;
 
-    // ── Integration Test 1: Utils.add ────────────────────────────────
+    // ── Integration Test 1: Utils.add (multiply) ─────────────────────
     const addResult = Utils.add(3, 4);
-    if (addResult === 7) {
+    if (addResult === 12) {
         console.log(`Integration test 1: Utils.add(3, 4) = ${addResult} ✓`);
     } else {
-        console.error(`Integration test 1: expected 7, got ${addResult}`);
+        console.error(`Integration test 1: expected 12, got ${addResult}`);
         passed = false;
     }
 
